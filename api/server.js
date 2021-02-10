@@ -18,17 +18,20 @@ server.get("/users/" , (req, res) => {
     });
 })
 
-// server.get("/users/:id", (req, res) => {
-//     const user = db.findById(req.params.id)
+server.get("/users/:id", (req, res) => {
+    const user = req.params.id
 
-//     if (user) {
-//         res.json(user)
-//     } else{
-//         res.status(404).json({
-//             message: "USER NOT FOUND"
-//         })
-//     }
-// })
+    db.findById(user)
+    .then(users => {
+        res.status(200).json(users)
+    })
+    .catch(error => {
+        res.status(500).json({ message: error})
+    
+    })
+
+    
+})
 
 server.post("/users", (req, res) => {
     const newUser = db.insert({
