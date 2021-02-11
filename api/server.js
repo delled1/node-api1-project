@@ -30,24 +30,32 @@ server.get("/users/:id", async (req, res) => {
     }
 })
 
-server.post("/users", (req, res) => {
-    const newUser = db.insert({
+server.post("/users", async (req, res) => {
+    try{
+    const newUser = {
         name: req.body.name,
         bio: req.body.bio
-    })
+    }
 
     
 
-    if (!newUser.name || !newUser.body) {
+    if (!newUser.name || !newUser.bio) {
 
         res.status(400).json({ 
             message: "Please provide name and bio for the user" 
         })
         
-    } else {
-        
-        res.status(201).json(newUser)
+    } await db.insert(newUser)
+    
+    return res.status(201).json(newUser)
     }
+    catch(err) {
+        console.log(err)
+        res.status(500).json({ message: "There was an error while saving the user to the database" })
+
+    }
+
+    
 })
 
 server.delete("/users/:id", async (req, res) => {
