@@ -36,7 +36,18 @@ server.post("/users", (req, res) => {
         bio: req.body.bio
     })
 
-    res.status(201).json(newUser)
+    
+
+    if (!newUser.name || !newUser.body) {
+
+        res.status(400).json({ 
+            message: "Please provide name and bio for the user" 
+        })
+        
+    } else {
+        
+        res.status(201).json(newUser)
+    }
 })
 
 server.delete("/users/:id", async (req, res) => {
