@@ -52,23 +52,22 @@ server.delete("/users/:id", async (req, res) => {
     }
 })
 
-// server.put("/users/:id", (req, res) => {
-//     const user = db.findById(req.params.id)
+server.put("/users/:id", async (req, res) => {
+    const user = await db.findById(req.params.id)
 
-//     db.findById(user)
-//     .then(users => {
-//         const updateUser = db.update(users.id, {
-//             name: req.body.name,
-//             bio: req.body.bio,
-//         })
-//         res.status(200).json(updateUser)
-        
-//     })
-//     .catch(err => {
-//         res.status(500).json({message: err})
-//     })
+    if (user) {
+        const updateUser = db.update(user.id, {
+            name: req.body.name,
+            bio:  req.body.bio,
+        })
+        res.json(updateUser)
+    } else{
+        res.status(404).json({
+            message: "User Not Found"
+        })
+    }
 
-// })
+})
 
 
 
